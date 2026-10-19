@@ -169,3 +169,11 @@ section, .pay-grid, .gallery { margin-bottom: 24px; }
   .site-nav a { padding: 0 14px; }
   .site-nav a.active { box-shadow: inset 0 -3px 0 var(--green); }
 }
+
+/* Videos */
+.videos { display: grid; grid-template-columns: 1fr; gap: 20px; justify-items: center; margin-bottom: 24px; }
+.video { margin: 0; width: 100%; max-width: 320px; background: var(--card); border-radius: var(--radius); overflow: hidden; }
+.video-frame { position: relative; width: 100%; aspect-ratio: 267 / 476; background: #000; }
+.video-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.video figcaption { padding: 10px 14px; text-align: center; }
+@media (min-width: 700px) { .videos { grid-template-columns: repeat(2, 1fr); } }
