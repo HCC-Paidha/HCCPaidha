@@ -1,11 +1,11 @@
 /* Harvest Community Church, Paidha - one stylesheet, mobile first.
    Colours: background #111, cards #1c1c1c, text #EEEEEE,
-   headings gold #F2D04B, accent green #5BC95F. */
+   headings gold #FFE14D, accent green #5BC95F. */
 :root {
   --bg: #111111;
   --card: #1c1c1c;
   --text: #eeeeee;
-  --gold: #f2d04b;
+  --gold: #ffe14d;
   --green: #5bc95f;
   --radius: 12px;
 }
