@@ -1,0 +1,55 @@
+name: Update quotes from Airtable
+on:
+  repository_dispatch:
+    types: [airtable_update]
+  workflow_dispatch:
+  schedule:
+    - cron: '*/15 * * * *'
+permissions:
+  contents: write
+  pages: write
+concurrency:
+  group: quotes
+  cancel-in-progress: false
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch Airtable records
+        env:
+          AIRTABLE_TOKEN: ${{ secrets.AIRTABLE_TOKEN }}
+        run: |
+          set -euo pipefail
+          URL='https://api.airtable.com/v0/appynnecuD3G0NNcW/tbl8u2TMAShXFOiTJ'
+          echo '[]' > all.json
+          OFFSET=''
+          while :; do
+            if [ -n "$OFFSET" ]; then Q="?offset=$OFFSET"; else Q=''; fi
+            HTTP=$(curl -sS -o page.json -w '%{http_code}' -H "Authorization: Bearer $AIRTABLE_TOKEN" "$URL$Q")
+            if [ "$HTTP" != "200" ] || ! jq -e '.records|type=="array"' page.json >/dev/null; then
+              echo "::error::Airtable request failed (HTTP $HTTP)"; jq -c '.error? // .' page.json || true; exit 1
+            fi
+            jq -s '.[0] + .[1].records' all.json page.json > tmp.json && mv tmp.json all.json
+            OFFSET=$(jq -r '.offset // empty' page.json)
+            [ -z "$OFFSET" ] && break
+          done
+          jq '[.[] | .fields | {Order:(.Order // null), Category:(.Category // ""), Quote:(.Quote // ""), Show:(.Show // false)}] | sort_by(.Order)' all.json > new_records.json
+          echo "Fetched $(jq length new_records.json) records"
+      - name: Write data.json if changed
+        id: write
+        run: |
+          set -euo pipefail
+          OLD=$(jq -cS '.records // []' quotes/data.json 2>/dev/null || echo 'null')
+          NEW=$(jq -cS '.' new_records.json)
+          if [ "$OLD" = "$NEW" ]; then echo "No changes"; echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; fi
+          jq --arg now "$(date -u +%Y-%m-%dT%H:%M:%SZ)" '{updated:$now, records:.}' new_records.json > quotes/data.json
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+      - name: Commit and push
+        if: steps.write.outputs.changed == 'true'
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add quotes/data.json
+          git commit -m 'Update quotes from Airtable'
+          git push
