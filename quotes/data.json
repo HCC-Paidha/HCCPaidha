@@ -1,6 +1,17 @@
 {
-  "updated": "2026-10-29T00:00:00Z",
+  "updated": "2026-10-30T03:09:33Z",
   "records": [
-    {"Order": 1, "Category": "Encouragement", "Quote": "Example quote — replace me.", "Show": true}
+    {
+      "Order": 1,
+      "Category": "Encouragement",
+      "Quote": "Example quote — replace me.",
+      "Show": true
+    },
+    {
+      "Order": 2,
+      "Category": "Wisdom",
+      "Quote": "Test quote 1",
+      "Show": true
+    }
   ]
 }
