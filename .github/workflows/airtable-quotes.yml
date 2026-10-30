@@ -4,7 +4,7 @@ on:
     types: [airtable_update]
   workflow_dispatch:
   schedule:
-    - cron: '*/15 * * * *'
+    - cron: '*/5 * * * *'
 permissions:
   contents: write
   pages: write
