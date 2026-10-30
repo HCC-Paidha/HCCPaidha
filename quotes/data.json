@@ -1,16 +1,22 @@
 {
-  "updated": "2026-10-30T03:09:33Z",
+  "updated": "2026-10-30T10:25:05Z",
   "records": [
     {
       "Order": 1,
+      "Category": "Wisdom",
+      "Quote": "Test quote 1 To be or not to bee",
+      "Show": true
+    },
+    {
+      "Order": 2,
       "Category": "Encouragement",
       "Quote": "Example quote — replace me.",
       "Show": true
     },
     {
-      "Order": 2,
-      "Category": "Wisdom",
-      "Quote": "Test quote 1",
+      "Order": 3,
+      "Category": "Scripture",
+      "Quote": "For God so love the world...",
       "Show": true
     }
   ]
