@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-30T20:55:13Z",
+  "updated": "2026-11-04T18:20:17Z",
   "records": [
     {
       "Order": 1,
@@ -9,7 +9,7 @@
     },
     {
       "Order": 2,
-      "Category": "Scripture",
+      "Category": "Encouragement",
       "Quote": "Test 2 For God so love the world...",
       "Show": true
     },
